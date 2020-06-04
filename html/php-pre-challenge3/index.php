@@ -21,8 +21,8 @@ while ($number = $numbers->fetchColumn()) { //fetchColumnで一次元配列で�
     $values[] = (int) $number; //values=[1,17,3,13,11,7,19,5]
 } //ループ毎に型変換するより一括で変換した方が処理の回数減っていいのだろうけれど、配列の値を一括で型変換するやり方が見つけられず。。
 
-//組み合わせの関数combを定義する
-function comb($array, $pick)
+//組み合わせを作る関数makeCombinationを定義する
+function makeCombination($array, $pick)
 {
     $numOfElem = count($array);
     if ($numOfElem < $pick) {
@@ -33,7 +33,7 @@ function comb($array, $pick)
         }
     } elseif ($pick > 1) {
         for ($i = 0; $i < $numOfElem - $pick + 1; $i++) {
-            $ts = comb(array_slice($array, $i + 1), $pick - 1);
+            $ts = makeCombination(array_slice($array, $i + 1), $pick - 1);
             foreach ($ts as $t) {
                 array_unshift($t, $array[$i]); //この返り値は$tに入る
                 $combination[] = $t; //ここも二次元配列、組み合わせ。
@@ -48,7 +48,7 @@ function comb($array, $pick)
 $length = count($values);
 for ($i = 1; $i < $length + 1; $i++) {
     echo "<pre>";
-    $comb[] = comb($values, $i); //変数$combに組み合わせ結果全てを代入した(二次元配列での作成)
+    $comb[] = makeCombination($values, $i); //変数$combに組み合わせ結果全てを代入した(二次元配列での作成)
     echo "<pre>";
 }
 //組み合わせ結果毎に値を合計し、それを配列とする=>配列とせずにいけた
