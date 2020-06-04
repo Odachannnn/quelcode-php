@@ -27,7 +27,8 @@ function makeCombination($array, $pick)
     $numOfElem = count($array);
     if ($numOfElem < $pick) {
         return;
-    } elseif ($pick === 1) {
+    }
+    if ($pick === 1) {
         for ($i = 0; $i < $numOfElem; $i++) {
             $combination[] = [$array[$i]]; //組み合わせをいれる配列$combination, 二次元配列
         }
