@@ -57,7 +57,7 @@ foreach ($comb as $key => $arr) { //$key:外側の配列の添字、$arr:内側�
     for ($j = 0; $j < $secLength; $j++) { //$j: 内側配列$arrの添字
         $sum = 0;
         foreach ($arr[$j] as $value) { //$value: 内側配列の各値
-            $sum = $sum + $value;
+            $sum += $value;
         }
         //$sumが合計値なら、ここで$limitと比較して出力できるかな？ =>できた
         if ($limit === $sum) {
