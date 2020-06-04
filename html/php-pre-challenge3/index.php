@@ -48,9 +48,7 @@ function makeCombination($array, $pick)
 //データベースにある整数の組み合わせを作る
 $length = count($values);
 for ($i = 1; $i < $length + 1; $i++) {
-    echo "<pre>";
     $comb[] = makeCombination($values, $i); //変数$combに組み合わせ結果全てを代入した(二次元配列での作成)
-    echo "<pre>";
 }
 //組み合わせ結果毎に値を合計し、それを配列とする=>配列とせずにいけた
 foreach ($comb as $key => $arr) { //$key:外側の配列の添字、$arr:内側の配列
