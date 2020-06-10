@@ -189,6 +189,10 @@ li {
 .msg p {
 	margin: 0;
 }
+.msg .msg__retweet {
+	font-size: 12px;
+	padding-bottom: 4px;
+}
 .msg .day,
 .msg .day a {
 	color: #999;
@@ -204,6 +208,9 @@ li {
 }
 .on_like_form {
 	color: #e63946;
+}
+.on_retweet_form {
+	color: #2ec4b6;
 }
 .post_info {
 	display: flex;
