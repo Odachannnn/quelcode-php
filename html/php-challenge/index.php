@@ -59,22 +59,22 @@ while ($likePost = $getLikePosts->fetchColumn()) {
 	$likePostArr[] = (int) $likePost;
 }
 //いいねを登録する
-if ($_GET['like'] === 'add') {
+if ($_POST['like'] === 'add') {
 	$addLike = $db->prepare('INSERT INTO likes SET like_member_id=?, like_post_id=?, created=NOW()');
 	$addLike->execute(array(
 		$member['id'],
-		$_GET['like_post_id']
+		$_POST['like_post_id']
 	));
 	header('Location: index.php'); //二重いいねの防止
 	exit;
 }
 //いいねを削除する
 //あるアカウントが、ある投稿にいいねをできるのは１回限り。なので、like_member_idとlike_post_idで消したいidを特定できる！！✌︎('ω'✌︎ )
-if ($_GET['like'] === 'delete') {
+if ($_POST['like'] === 'delete') {
 	$getLikeId = $db->prepare('SELECT id FROM likes WHERE like_member_id=? AND like_post_id=?');
 	$getLikeId->execute(array(
 		$member['id'],
-		$_GET['like_post_id']
+		$_POST['like_post_id']
 	));
 	$likeId = $getLikeId->fetch();
 	$deleteLike = $db->prepare('DELETE FROM likes WHERE id=?');
@@ -280,7 +280,7 @@ function binarySearch($array, $target)
 								if (!binarySearch($likePostArr, $post['retwi_origin_id'])) : ?>
 									<!--その投稿にいいねしたことがないならば？-->
 									<!--いいね機能-->
-									<form action="" method="get">
+									<form action="" method="post">
 										<input type="hidden" name="like" value="add">
 										<input type="hidden" name="like_post_id" value="<?php echo $post['retwi_origin_id']; ?>">
 										<input type="image" name="like" src="images/like.png" alt="いいね" width="13px" height="13px">
@@ -290,7 +290,7 @@ function binarySearch($array, $target)
 									</form>
 								<?php else : ?>
 									<!--いいね取り消し機能-->
-									<form action="" method="get">
+									<form action="" method="post">
 										<input type="hidden" name="like" value="delete">
 										<input type="hidden" name="like_post_id" value="<?php echo $post['retwi_origin_id']; ?>">
 										<input type="image" src="images/after_like.png" alt="いいね取り消し" width="13px" height="13px">
@@ -336,7 +336,7 @@ function binarySearch($array, $target)
 								if (!binarySearch($likePostArr, $post['id'])) : ?>
 									<!--その投稿にいいねしたことがないならば？-->
 									<!--いいね機能-->
-									<form action="" method="get">
+									<form action="" method="post">
 										<input type="hidden" name="like" value="add">
 										<input type="hidden" name="like_post_id" value="<?php echo $post['id']; ?>">
 										<input type="image" name="like" src="images/like.png" alt="いいね" width="13px" height="13px">
@@ -346,7 +346,7 @@ function binarySearch($array, $target)
 									</form>
 								<?php else : ?>
 									<!--いいね取り消し機能-->
-									<form action="" method="get">
+									<form action="" method="post">
 										<input type="hidden" name="like" value="delete">
 										<input type="hidden" name="like_post_id" value="<?php echo $post['id']; ?>">
 										<input type="image" src="images/after_like.png" alt="いいね取り消し" width="13px" height="13px">
