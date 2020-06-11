@@ -69,7 +69,7 @@ if ($_POST['like'] === 'add') {
 	exit;
 }
 //いいねを削除する
-//あるアカウントが、ある投稿にいいねをできるのは１回限り。なので、like_member_idとlike_post_idで消したいidを特定できる！！✌︎('ω'✌︎ )
+//あるアカウントが、ある投稿にいいねをできるのは１回限り。なので、like_member_idとlike_post_idで消したいidを特定する
 if ($_POST['like'] === 'delete') {
 	$getLikeId = $db->prepare('SELECT id FROM likes WHERE like_member_id=? AND like_post_id=?');
 	$getLikeId->execute(array(
@@ -82,8 +82,7 @@ if ($_POST['like'] === 'delete') {
 	header('Location: index.php');
 	exit;
 }
-//投稿ごとのいいね数を取得するにはlikesテーブルの各like_post_idをカウントしたらいけると思ったんだけどな=>いけた！！✌︎('ω'✌︎ )
-//$post['id']の値が必要なので、foreach文内でSQLを実行した
+//投稿ごとのいいね数を取得するにはlikesテーブルの各like_post_idをカウント。$post['id']の値が必要なので、foreach文内でSQLを実行した
 $numsOfLike = $db->prepare('SELECT COUNT(id) AS cntLike FROM likes WHERE like_post_id=?');
 
 //いいね機能終わり
@@ -106,15 +105,12 @@ if ($_POST['retweet'] === 'send') {
 		$_POST['origin_member_id'],
 		$_POST['origin_id']
 	));
-	//リツイート元の投稿にいいねがついていた場合どうする？？
-	//like_post_id=reposts.origin_id
 	header('Location: index.php');
 	exit();
 }
 //リツイートを取り消す
 if ($_POST['retweet'] === 'delete') {
-	//まず消したいリツイートを特定する。
-	//一つのアカウントが一つの投稿をリツイートできるのは１回限りなので、そこから特定
+	//まず消したいリツイートを特定する。一つのアカウントが一つの投稿をリツイートできるのは１回限りなので、そこから特定
 	//repostsテーブルからの削除
 	$getRetweetId = $db->prepare('SELECT id FROM reposts WHERE my_member_id=? AND origin_id=?');
 	$getRetweetId->execute(array(
@@ -138,8 +134,7 @@ if ($_POST['retweet'] === 'delete') {
 	header('Location: index.php');
 	exit;
 }
-//ログインしている人が以前行ったリツイートを取得する
-//一つのアカウントが一つの投稿をリツイートできるのは１回限り。
+//ログインしている人が以前行ったリツイートを取得する。一つのアカウントが一つの投稿をリツイートできるのは１回限り。
 //repostsテーブルからログインしている人の、リツイートしたorigin_idを取得する
 $getRetweets = $db->prepare('SELECT origin_id FROM reposts WHERE my_member_id=? ORDER BY origin_id ASC');
 $getRetweets->execute(array($member['id']));
@@ -238,17 +233,17 @@ function binarySearch($array, $target)
 			<!--リツイートされたものである場合-->
 			
 			<!--いいね機能-->
-			<!--いいねをすると、元の投稿のいいね数に反映させたい=>likesテーブルのlike_post_idには、postsテーブルのretwi_origin_idを渡す✌︎('ω'✌︎ )-->
-			<!--リツイート後の投稿にも、いいね数を反映させたい=>処置は上記同様✌︎('ω'✌︎ )-->
-			<!--リツイート後の投稿からも、いいねを取り消せるようにしたい=>処置は上記同様✌︎('ω'✌︎ )-->
+			<!--いいねをすると、元の投稿のいいね数に反映させたい=>likesテーブルのlike_post_idには、postsテーブルのretwi_origin_idを渡す-->
+			<!--リツイート後の投稿にも、いいね数を反映させたい=>処置は上記同様-->
+			<!--リツイート後の投稿からも、いいねを取り消せるようにしたい=>処置は上記同様-->
 			
 			<!--リツイート機能-->
-			<!--リツイートをすると、元の投稿のリツイート数に反映させたい=>repostsテーブルのorigin_idに、postsテーブルのretwi_origin_idを渡してみる✌︎('ω'✌︎ )-->
-			<!--リツイート後の投稿にも、リツイート数を反映させたい=>処置は上記同様✌︎('ω'✌︎ )-->
-			<!--リツイート後の投稿からも、リツイートを取り消したい=>処置は上記同様✌︎('ω'✌︎ )-->
+			<!--リツイートをすると、元の投稿のリツイート数に反映させたい=>repostsテーブルのorigin_idに、postsテーブルのretwi_origin_idを渡してみる-->
+			<!--リツイート後の投稿にも、リツイート数を反映させたい=>処置は上記同様-->
+			<!--リツイート後の投稿からも、リツイートを取り消したい=>処置は上記同様-->
 			<!--その際、再投稿されたpost自体も削除したい-->
 			<!--一つのアカウントが、一つの投稿に対してリツイートできるのは１回限り。そのため、postsテーブルのidを特定するには、postsテーブルにリツイートした人のカラムが必要-->
-			<!--retwi_member_idとretwi_origin_idでposts.idを特定して削除できるかも=>できた✌︎('ω'✌︎ )-->
+			<!--retwi_member_idとretwi_origin_idでposts.idを特定して削除できる-->
 
 			<!--リツイートされたものではない場合-->
 			
