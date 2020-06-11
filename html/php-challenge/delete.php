@@ -15,7 +15,9 @@ if (isset($_SESSION['id'])) {
 		$del = $db->prepare('DELETE FROM posts WHERE id=?');
 		$del->execute(array($id));
 	}
+	//もしその投稿がリツイートされていたら、リツイートされた全ての投稿も削除する
+	$retweetDelete = $db->prepare('DELETE FROM posts WHERE retwi_origin_id=?');
+	$retweetDelete->execute(array($id));
 }
-
 header('Location: index.php'); exit();
 ?>
